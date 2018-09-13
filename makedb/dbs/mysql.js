@@ -46,13 +46,17 @@ module.exports = {
             password : dbConf.connections.mysql.password
         });
 
-        console.log("Creating database `" + ( parsedOpts ? parsedOpts.database : dbConf.connections.mysql.database ) + "` if not exists.");
+        var database = parsedOpts ? parsedOpts.database : dbConf.connections.mysql.database;
 
-        connection.query('CREATE DATABASE IF NOT EXISTS ' + ( parsedOpts ? parsedOpts.database : dbConf.connections.mysql.database ), function (error, results, fields) {
+        console.log("Creating database `" + database + "` if not exists.");
+
+        connection.query('CREATE DATABASE IF NOT EXISTS ' + database, function (error, results, fields) {
             if (error) {
                 console.error(error);
                 return next(error);
             }
+
+            console.log("Database `" + database + "` created! Continue...");
 
             return next();
         });
